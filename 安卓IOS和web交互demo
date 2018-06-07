@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <body>
+        
+        <h1>OC与JS交互</h1>
+        
+        <p id="yidahulian1"></p>
+        <p id="yidahulian2"></p>
+        
+        <script>
+            function yida_oc_to_js()
+            {
+                x=document.getElementById("yidahulian1"); // 找到元素
+                x.innerHTML="OC调用JS(没有传值)[成功]";// 改变指定标签内容
+            }
+            function yida_oc_to_js2(num,name,url)
+            {
+                //alert(name+url);
+                x=document.getElementById("yidahulian2"); // 找到元素
+                x.innerHTML="OC调用JS[成功],传过来的字符串为:"+num+name+url;// 改变指定标签内容
+            }
+        </script>
+        
+        <input type="button" value="JS调用OC不传值" onclick="js_call_oc()"/>
+        <input type="button" value="JS调用OC并传值" onclick="js_call_oc2()"/>
+        <input type="button" value="JS调用OC代码里的无参方法名" onclick="js_call_oc3()"/>
+        <input type="button" value="JS调用OC代码里的有参数方法名" onclick="js_call_oc4()"/>
+        
+        <script>
+            function js_call_oc()
+            {
+                //向OC代码传空值
+                window.webkit.messageHandlers.yida_js_to_oc.postMessage(null);
+            }
+            function js_call_oc2()
+            {
+                //向OC代码传字符串
+                window.webkit.messageHandlers.yida_js_to_oc2.postMessage("百度https://www.baidu.com 
+
+");
+            }
+            function js_call_oc3()
+            {
+                //向OC代码传数组
+                window.webkit.messageHandlers.yida_js_to_oc3.postMessage(["hello","world","百度"]);
+            }
+            function js_call_oc4()
+            {
+                //向OC代码传字典
+                window.webkit.messageHandlers.yida_js_to_oc4.postMessage({"key1":"百度","key2":"hello world"});
+            }
+        </script>
+        
+    </body>
+</html>
