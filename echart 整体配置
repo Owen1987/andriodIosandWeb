@@ -1,0 +1,55 @@
+  1.css设置容器的宽高
+  <style type="text/css">
+			.chart{
+				width:400px;
+				height:400px;
+			}
+		</style>
+ 2.html   
+ <div class="chart" id="pieChart"></div>
+3.引入js 
+<script src="js/echarts.min.js"></script>
+4.配置项
+var pieOption={
+              title: {...},//标题组件，包含主标题和副标题。
+              legend: {...},//图例组件。图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
+              grid: {...},//直角坐标系内绘图网格，单个 grid 内最多可以放置上下两个 X 轴，左右两个 Y 轴。可以在网格上绘制折线图，柱状图，散点图（气泡图）。
+              xAxis: {...},//直角坐标系 grid 中的 x 轴，一般情况下单个 grid 组件最多只能放上下两个 x 轴，多于两个 x 轴需要通过配置 offset 属性防止同个位置多个 x 轴的重叠。
+              yAxis: {...},//直角坐标系 grid 中的 y 轴，一般情况下单个 grid 组件最多只能放上下两个 x 轴，多于两个 x 轴需要通过配置 offset 属性防止同个位置多个 x 轴的重叠。
+              polar: {...},//极坐标系，可以用于散点图和折线图。每个极坐标系拥有一个角度轴和一个半径轴。
+              radiusAxis: {...},//极坐标系的径向轴。
+              angleAxis: {...},//极坐标系的角度轴
+              radar: {...},//雷达图坐标系组件，只适用于雷达图。该组件等同 ECharts 2 中的 polar 组件。因为 3 中的 polar 被重构为标准的极坐标组件，为避免混淆，雷达图使用 radar 组件作为其坐标系。
+              dataZoom: [...],//dataZoom 组件 用于区域缩放，从而能自由关注细节的数据信息，或者概览数据整体，或者去除离群点的影响。
+              visualMap: [...],//visualMap 是视觉映射组件，用于进行『视觉编码』，也就是将数据映射到视觉元素（视觉通道）。
+              tooltip: {...},//提示框组件。
+              axisPointer: {...},//坐标轴指示器是指示坐标轴当前刻度的工具。这是坐标轴指示器（axisPointer）的全局公用设置。
+              toolbox: {...},//工具栏。内置有导出图片，数据视图，动态类型切换，数据区域缩放，重置五个工具。
+              brush: {...},//brush 是区域选择组件，用户可以选择图中一部分数据，从而便于向用户展示被选中数据，或者他们的一些统计计算结果。
+              geo: {...},//地理坐标系组件。地理坐标系组件用于地图的绘制，支持在地理坐标系上绘制散点图，线集。
+              parallel: {...},//平行坐标系（Parallel Coordinates） 是一种常用的可视化高维数据的图表。
+              parallelAxis: {...},//这个组件是平行坐标系中的坐标轴。
+              singleAxis: {...},//单轴。可以被应用到散点图中展现一维数据，如下示例
+              timeline: {...},//timeline 组件，提供了在多个 ECharts option 间进行切换、播放等操作的功能。
+              graphic: {...},//graphic 是原生图形元素组件。可以支持的图形元素包括：image, text, circle, sector, ring, polygon, polyline, rect, line, bezierCurve, arc, group,
+              calendar: {...},//日历坐标系组件。
+              dataset: {...},//ECharts 4 开始支持了 数据集（dataset）组件用于单独的数据集声明，从而数据可以单独管理，被多个组件复用，并且可以自由指定数据到视觉的映射。这在不少场景下能带来使用上的方便。
+              aria: {...},//W3C 制定了无障碍富互联网应用规范集（WAI-ARIA，the Accessible Rich Internet Applications Suite），致力于使得网页内容和网页应用能够被更多残障人士访问
+              series: [...],//系列列表。每个系列通过 type 决定自己的图表类型
+              color: {...},//调色盘颜色列表。如果系列没有设置颜色，则会依次循环从该列表中取颜色作为系列颜色。
+              backgroundColor: {...},//背景色，默认无背景。
+              textStyle: {...},//全局的字体样式。
+              animation: {...},//是否开启动画。
+              animationThreshold: {...},//是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+              animationDuration: {...},//初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+              animationEasing: {...},//初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+              animationDelay: {...},//初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
+              animationDurationUpdate: {...},//数据更新动画的时长。
+              animationEasingUpdate: {...},//数据更新动画的缓动效果。
+              animationDelayUpdate: {...},//数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
+              blendMode: {...},//图形的混合模式，不同的混合模式见 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation 。
+              hoverLayerThreshold: {...},//图形数量阈值，决定是否开启单独的 hover 层，在整个图表的图形数量大于该阈值时开启单独的 hover 层。
+              useUTC: {...},//是否使用 UTC 时间。
+             }
+        
+   echarts.init(document.getElementById("pieChart")).setOption(pieOption);
