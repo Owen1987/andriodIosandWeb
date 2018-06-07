@@ -1,0 +1,385 @@
+***************************************************series的配置************************************************************************************
+	series:[
+         {
+          type:'pie',
+				  id:'pie1',//组件 ID。默认不指定。指定则可用于在 option 或者 API 中引用组件。
+				  name:'饼图',//系列名称，用于tooltip的显示，legend 的图例筛选，在 setOption 更新数据和配置项时用于指定对应的系列。
+				  legendHoverLink: true,//是否启用图例 hover 时的联动高亮
+				  hoverAnimation: true,//是否开启 hover 在扇区上的放大动画效果。
+					hoverOffset: 10,//高亮扇区的偏移距离。
+					selectedMode:false,//选中模式，表示是否支持多个选中，默认关闭，支持布尔值和字符串，字符串取值可选'single'，'multiple'，分别表示单选还是多选。
+					selectedOffset: 10,//选中扇区的偏移距离
+					clockwise: true,//饼图的扇区是否是顺时针排布。
+					startAngle: 90,//起始角度，支持范围[0, 360]。
+					minAngle: 0,//最小的扇区角度（0 ~ 360），用于防止某个值过小导致扇区太小影响交互。
+					roseType: false,//是否展示成南丁格尔图，通过半径区分数据大小。可选择两种模式：'radius' 扇区圆心角展现数据的百分比，半径展现数据的大小。'area' 所有扇区圆心角相同，仅通过半径展现数据大小。
+					avoidLabelOverlap: true,//是否启用防止标签重叠策略，默认开启，在标签拥挤重叠的情况下会挪动各个标签的位置，防止标签间的重叠。
+					stillShowZeroSum: true,//是否在数据和为0（一般情况下所有数据为0） 的时候不显示扇区。
+					cursor: 'pointer',//鼠标悬浮时在图形元素上时鼠标的样式是什么。同 CSS 的 cursor。
+					
+					zlevel: 0,//所有图形的 zlevel 值。zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。不要分层太多，手机端容易奔溃
+					z: 2,//组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。z相比zlevel优先级更低，而且不会创建新的 Canvas。
+					center: ['50%', '50%'],//饼图的中心（圆心）坐标，数组的第一项是横坐标（容器宽），第二项是纵坐标（容器高）。2.像素值[400, 300]
+					radius: [0, '75%'],//饼图的半径，数组的第一项是内半径，第二项是外半径。内半径设大显示成圆环图
+				  /*如果 series.data 没有指定，并且 dataset 存在 */
+					seriesLayoutBy: 'column',//'row'当使用 dataset 时，seriesLayoutBy 指定了 dataset 中用行还是列对应到系列上，也就是说，系列“排布”到 dataset 的行还是列上
+					datasetIndex: 0,//如果 series.data 没有指定，并且 dataset 存在，那么就会使用 dataset。datasetIndex 指定本系列使用那个 dataset。
+	
+	                silent: false,//图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
+					animationType: 'expansion',//初始动画效果，可选,'expansion' 默认研圆弧展开的效果。'scale' 缩放效果，配合设置 animationEasing='elasticOut' 可以做成 popup 的效果。
+					animation: true,//是否开启动画。
+					animationThreshold: 2000,//是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+					animationDuration: 1000,//初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+					                 //animationDuration: function (idx) {// 越往后的数据延迟越大 return idx * 100;}
+					animationEasing: cubicOut,//初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+					animationDelay: 0,//初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
+					                 // animationDelay:function (idx) {// 越往后的数据延迟越大 return idx * 100;}
+					animationDurationUpdate: 300,//数据更新动画的时长。
+					                //animationDurationUpdate:function (idx) {// 越往后的数据延迟越大 return idx * 100;}
+					animationEasingUpdate: cubicOut,//数据更新动画的缓动效果。
+					animationDelayUpdate: 0,//数据更新动画的延迟，支持回调函数
+	                                // animationDelayUpdate: function (idx) {// 越往后的数据延迟越大 return idx * 100;}        
+	/*
+				  /*饼图图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 emphasis 状态。*/ 
+				    label: {
+							show: false,
+							position: 'outside',//标签位置：'inside'、'inner' 同 'inside''center'
+						/*1.formatter字符串模板 
+						       字符串模板 模板变量有：{a}：系列名。{b}：数据名。{c}：数据值。{d}：百分比。{@xxx}：数据中名为'xxx'的维度的值，如{@product}表示名为'product'` 的维度的值。
+						       {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。formatter: '{b}: {d}'
+						  2.回调函数 (params: Object|Array) => string 参数 params 是 formatter 需要的单个数据集。格式如下：
+						  { 
+						  	componentType: 'series',
+						    // 系列类型
+						    seriesType: string,
+						    // 系列在传入的 option.series 中的 index
+						    seriesIndex: number,
+						    // 系列名称
+						    seriesName: string,
+						    // 数据名，类目名
+						    name: string,
+						    // 数据在传入的 data 数组中的 index
+						    dataIndex: number,
+						    // 传入的原始数据项
+						    data: Object,
+						    // 传入的数据值
+						    value: number|Array,
+						    // 数据图形的颜色
+						    color: string,
+						
+						    // 百分比
+						    percent: number,
+
+							}
+						       * */
+							formatter: '{b}: {d}',//标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
+							color: '#fff',//文字的颜色。
+							fontStyle: 'normal',//文字字体的风格 'italic' 'oblique'
+							fontWeight: normal,//字体粗细'bold''bolder''lighter'   100 | 200 | 300 | 400...
+							fontFamily: 'sans-serif',//文字字体系列还可以是 'serif' , 'monospace', 'Arial', 'Courier New', 'Microsoft YaHei', ...
+							fontSize: 12,//字体大小
+							align: 'left',//文字对齐方式'left' 'center' 'right'，rich 中如果没有设置 align，则会取父层级的 align。例如：{align: right,rich: {a: {// 没有设置 `align`，则 `align` 为 right}}}
+							verticalAlign: 'middle',//'top''middle''bottom'，rich 中如果没有设置verticalAlign，则会取父层级的 align。
+
+
+							lineHeight: 56,//行高，rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight
+							backgroundColor: 'transparent',//文字块背景色。'#123234', 'red', rgba(0,23,11,0.3)' 图片{image：'xxx/xxx.png' //URL/ dataURI/HTMLImageElement 对象/HTMLCanvasElement 对象当使用图片的时候，可以使用 width 或 height 指定高宽，也可以不指定自适应。 }
+							borderColor: 'transparent',//文字块边框颜色。
+							borderWidth: 0,//文字块边框宽度。
+							borderRadius: 0,//圆角
+							padding: 0,//文字块的内边距。例如padding: [3, 4, 5, 6] padding: 4=[4, 4, 4, 4]   padding: [3, 4]=[3, 4, 3, 4]
+							shadowColor: 'transparent',//文字块的背景阴影颜色。
+							shadowBlur: 0,//文字块的背景阴影长度。
+							shadowOffsetX: 0,//文字块的背景阴影 X 偏移。
+							shadowOffsetY: 0,//文字块的背景阴影 Y 偏移。
+						//	width: ...,//文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。不含padding
+							           //width 也可以是百分比字符串，如 '100%'。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
+							           //注意，如果不定义 rich 属性，则不能指定 width 和 height。
+						//	height: ...,
+							textBorderColor: 'transparent',//文字本身的描边颜色。
+							textBorderWidth: 0,//文字本身的描边宽度。
+							textShadowColor: 'transparent',//文字本身的阴影颜色。
+							textShadowBlur: 0,//文字本身的阴影长度
+							textShadowOffsetX: 0,//文字本身的阴影X偏移
+							textShadowOffsetY: 0,//文字本身的阴影Y偏移
+							/*在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
+							 使用
+							 label: {
+								    // 在文本中，可以对部分文本采用 rich 中定义样式。
+								    // 这里需要在文本中使用标记符号：
+								    // `{styleName|text content text content}` 标记样式名。
+								    // 注意，换行仍是使用 '\n'。
+								    formatter: [
+								        '{a|这段文本采用样式a}',
+								        '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'
+								    ].join('\n'),
+								
+								    rich: {
+								        a: {
+								            color: 'red',
+								            lineHeight: 10
+								        },
+								        b: {
+								            backgroundColor: {
+								                image: 'xxx/xxx.jpg'
+								            },
+								            height: 40
+								        },
+								        x: {
+								            fontSize: 18,
+								            fontFamily: 'Microsoft YaHei',
+								            borderColor: '#449933',
+								            borderRadius: 4
+								        },
+								        ...
+								    }
+								}
+							 * */
+							rich:{//用户自定义样式
+								
+							}
+					},
+					/*标签的视觉引导线样式，在 label 位置 position设置为'outside'的时候会显示视觉引导线。*/
+					labelLine:{
+						show: true,//是否显示视觉引导线true/false
+						length: 10,//视觉引导线第一段的长度。
+						length2: 10,//视觉引导线第二段的长度。
+						smooth: false,//是否平滑视觉引导线，默认不平滑，可以设置成 true 平滑显示，也可以设置为 0 到 1 的值，表示平滑程度。
+						lineStyle: {//折叠详情
+							color: '#000',//{type: 'linear/radial',x: 0,y: 0,x2: 0,y2: 1,colorStops: [{offset: 0, color: 'red' // 0% 处的颜色}, {offset: 1, color: 'blue' // 100% 处的颜色}],globalCoord: false // 缺省为 false}
+							          //文理填充{ image: imageDom, // 支持为 HTMLImageElement, HTMLCanvasElement，不支持路径字符串 repeat: 'repeat' // 是否平铺, 可以是 'repeat-x', 'repeat-y', 'no-repeat'}
+							width: 1,
+							type: solid,
+							shadowBlur: ...,
+							shadowColor: ...,
+							shadowOffsetX: 0,
+							shadowOffsetY: 0,
+							opacity: ...
+						},
+						emphasis: {//高亮状态下视觉引导线的样式。
+							show: true,//是否显示视觉引导线。
+							lineStyle: {
+								color: '#000',
+								width: 1,
+								type: solid,
+								shadowBlur: ...,
+								shadowColor: ...,
+								shadowOffsetX: 0,
+								shadowOffsetY: 0,
+								opacity: ...,
+							},
+						}
+						
+					},
+					itemStyle: {//图形样式。
+								color: 自适应,
+								borderColor: '#000',
+								borderWidth: 0,
+								borderType: 'solid',
+								shadowBlur: ...,
+								shadowColor: ...,
+								shadowOffsetX: 0,
+								shadowOffsetY: 0,
+								opacity: ...,
+						    },
+				    emphasis: {//高亮的扇区和标签样式。
+								label: {...},
+								itemStyle: {
+								color: 自适应,
+								borderColor: '#000',
+								borderWidth: 0,
+								borderType: 'solid',
+								shadowBlur: ...,
+								shadowColor: ...,
+								shadowOffsetX: 0,
+								shadowOffsetY: 0,
+								opacity: ...,
+								}
+						}		
+					data:[{
+								name: ...,//数据项名称。
+								value: ...,//数据项值
+								selected: false,//该数据项是否被选中。
+								label: {//单个扇区的标签配置。
+									 
+										show: false,
+										position: 'outside',
+										color: '#fff',
+										fontStyle: 'normal',
+										fontWeight: normal,
+										fontFamily: 'sans-serif',
+										fontSize: 12,
+										align: ...,
+										verticalAlign: ...,
+										lineHeight: ...,
+										backgroundColor: 'transparent',
+										borderColor: 'transparent',
+										borderWidth: 0,
+										borderRadius: 0,
+										padding: 0,
+										shadowColor: 'transparent',
+										shadowBlur: 0,
+										shadowOffsetX: 0,
+										shadowOffsetY: 0,
+										width: ...,
+										height: ...,
+										textBorderColor: 'transparent',
+										textBorderWidth: 0,
+										textShadowColor: 'transparent',
+										textShadowBlur: 0,
+										textShadowOffsetX: 0,
+										textShadowOffsetY: 0,
+										rich: {...},
+								},
+								labelLine: {
+										show: ...,
+										length: ...,
+										length2: ...,
+										smooth: false,
+										lineStyle: {...},
+										emphasis: {...},
+								},
+								itemStyle: {
+										color: 自适应,
+										borderColor: '#000',
+										borderWidth: 0,
+										borderType: 'solid',
+										shadowBlur: ...,
+										shadowColor: ...,
+										shadowOffsetX: 0,
+										shadowOffsetY: 0,
+										opacity: ...,
+								},
+								emphasis: {
+										label: {
+										
+											show: false,
+											color: '#fff',
+											fontStyle: 'normal',
+											fontWeight: normal,
+											fontFamily: 'sans-serif',
+											fontSize: 12,
+											align: ...,
+											verticalAlign: ...,
+											lineHeight: ...,
+											backgroundColor: 'transparent',
+											borderColor: 'transparent',
+											borderWidth: 0,
+											borderRadius: 0,
+											padding: 0,
+											shadowColor: 'transparent',
+											shadowBlur: 0,
+											shadowOffsetX: 0,
+											shadowOffsetY: 0,
+											width: ...,
+											height: ...,
+											textBorderColor: 'transparent',
+											textBorderWidth: 0,
+											textShadowColor: 'transparent',
+											textShadowBlur: 0,
+											textShadowOffsetX: 0,
+											textShadowOffsetY: 0,
+											rich: {...},
+										},
+										itemStyle: {//图形的颜色。
+											color: 自适应,
+											borderColor: '#000',
+											borderWidth: 0,
+											borderType: 'solid',
+											shadowBlur: ...,
+											shadowColor: ...,
+											shadowOffsetX: 0,
+											shadowOffsetY: 0,
+											opacity: ...,
+										}
+								tooltip: {//本系列每个数据项中特定的 tooltip 设定。
+											position: ...,
+											formatter: ...,
+											backgroundColor: 'rgba(50,50,50,0.7)',
+											borderColor: '#333',
+											borderWidth: 0,
+											padding: 5,
+											textStyle: {
+												color: '#fff',
+												fontStyle: 'normal',
+												fontWeight: normal,
+												fontFamily: 'sans-serif',
+												fontSize: 14,
+												lineHeight: ...,
+												width: ...,
+												height: ...,
+												textBorderColor: 'transparent',
+												textBorderWidth: 0,
+												textShadowColor: 'transparent',
+												textShadowBlur: 0,
+												textShadowOffsetX: 0,
+												textShadowOffsetY: 0
+											},
+											extraCssText:  'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',//额外附加到浮层的 css 样式。注意：series.data.tooltip 仅在 tooltip.trigger 为 'item' 时有效。
+								}
+								
+								}],
+					markPoint: {//图表标注。
+								symbol: 'pin',
+								symbolSize: 50,
+								symbolRotate: 90,//标记的旋转角度。注意在 markLine 中当 symbol 为 'arrow' 时会忽略 symbolRotate 强制设置为切线的角度。
+								symbolKeepAspect: false,
+								symbolOffset: [0, 0],
+								silent: false,
+								label: {...},
+								itemStyle: {...},
+								emphasis: {...},
+								data: [{...}],
+								animation: true,
+								animationThreshold: 2000,
+								animationDuration: 1000,
+								animationEasing: cubicOut,
+								animationDelay: 0,
+								animationDurationUpdate: 300,
+								animationEasingUpdate: cubicOut,
+								animationDelayUpdate: 0,
+					         },
+					markLine: {//图表标线。
+								silent: false,
+								symbol: ...,
+								symbolSize: ...,
+								precision: 2,
+								label: {...},
+								lineStyle: {...},
+								emphasis: {...},
+								data: {...},
+								animation: true,
+								animationThreshold: 2000,
+								animationDuration: 1000,
+								animationEasing: cubicOut,
+								animationDelay: 0,
+								animationDurationUpdate: 300,
+								animationEasingUpdate: cubicOut,
+								animationDelayUpdate: 0,
+					          },
+					markArea: {//图表标域，常用于标记图表中某个范围的数据，例如标出某段时间投放了广告。
+								silent: false,
+								label: {...},
+								itemStyle: {...},
+								emphasis: {...},
+								data: {...},
+								animation: false,
+								animationThreshold: 2000,
+								animationDuration: 1000,
+								animationEasing: cubicOut,
+								animationDelay: 0,
+								animationDurationUpdate: 300,
+								animationEasingUpdate: cubicOut,
+								animationDelayUpdate: 0,          
+					        },
+					tooltip: {
+								position: ...,
+								formatter: ...,
+								backgroundColor: 'rgba(50,50,50,0.7)',
+								borderColor: '#333',
+								borderWidth: 0,
+								padding: 5,
+								textStyle: {...},
+								extraCssText: ...,
+						},
+            }]
